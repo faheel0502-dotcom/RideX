@@ -1,15 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/layout/Navbar';
 import { AIChatbox } from '@/components/ai/AIChatbox';
 import { CharRevealButton } from '@/components/ui/CharRevealButton';
-import { StaggeredText } from '@/components/ui/StaggeredText';
 import { apiFetch } from '@/services/api';
 import { motion } from 'framer-motion';
-import { Shield, Sparkles, Zap, ChevronDown } from 'lucide-react';
+import { Sparkles, ChevronDown } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
@@ -43,10 +41,13 @@ export default function Home() {
         <Navbar onOpenAIChat={() => setIsAIChatOpen(true)} />
       </div>
 
-      {/* Slide 1: INTRO HERO */}
-      <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-cover bg-center overflow-hidden" style={{ backgroundImage: "var(--hero-gradient), url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1920&q=80')" }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-16">
-          <div className="flex flex-col gap-4 text-left">
+      {/* ─── Slide 1: INTRO HERO ─── */}
+      <section
+        className="h-screen w-full snap-start shrink-0 relative flex items-center bg-cover bg-center overflow-hidden"
+        style={{ backgroundImage: "var(--hero-gradient), url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1920&q=80')" }}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full mt-16 z-10">
+          <div className="flex flex-col gap-4 text-left max-w-lg">
             <span className="text-[10px] font-bold tracking-widest text-orange-accent uppercase bg-orange-accent/15 px-3 py-1.5 rounded-full w-fit border border-orange-accent/25">
               RideX Studio Production
             </span>
@@ -58,7 +59,8 @@ export default function Home() {
             <p className="text-sm text-zinc-300 max-w-sm mt-2 leading-relaxed">
               Tactile, high-octane gear floating in engineered darkness. We craft protection for those who challenge speed.
             </p>
-            <div className="flex gap-4 mt-4">
+            {/* Buttons wrap on mobile */}
+            <div className="flex flex-wrap gap-3 mt-4">
               <CharRevealButton
                 text="Explore shop"
                 onClick={() => router.push('/shop')}
@@ -73,7 +75,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Rotated Edge Label */}
+        {/* Rotated Edge Label — desktop only */}
         <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block rotate-90 origin-right text-[10px] font-mono tracking-widest text-zinc-500 select-none uppercase">
           RIDEX-1 / MOTORCYCLE LIFESTYLE
         </div>
@@ -85,17 +87,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Slide 2: SHOEI HELMET */}
+      {/* ─── Slide 2: SHOEI HELMET ─── */}
       <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden border-b border-border/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16 z-10">
-          
-          {/* Left Side: Dense Display Headline */}
+        {/* Floating product image — fades on mobile so text stays readable */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+          <motion.div
+            whileInView={{ rotate: [0, 8, 0], scale: [0.95, 1.05, 0.95] }}
+            transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut' }}
+            className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute opacity-40 md:opacity-100"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <motion.img
+            whileInView={{ y: [-15, 15, -15], rotate: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            src="https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=600&q=80"
+            alt="Shoei X-Fifteen"
+            className="w-[200px] md:w-[480px] object-contain drop-shadow-[0_10px_30px_rgba(255,90,0,0.1)] opacity-15 md:opacity-100"
+            style={{
+              mixBlendMode: 'var(--product-blend)' as any,
+              filter: 'var(--product-filter)',
+              WebkitMaskImage: 'var(--product-mask)',
+              maskImage: 'var(--product-mask)'
+            }}
+          />
+        </div>
+
+        {/* Foreground text content */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mt-16 z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
             <span className="text-[10px] font-mono font-bold tracking-widest text-orange-accent uppercase">
               MODEL 01 / AERODYNAMICS
@@ -105,7 +129,16 @@ export default function Home() {
               X-FIFTEEN<br />
               HELMET
             </h2>
-            <div className="flex gap-4 mt-2">
+            {/* Specs — visible on mobile too, compact */}
+            <div className="flex flex-col gap-1.5 font-mono text-[11px] text-text-muted uppercase md:hidden">
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Cert</span><span className="text-text-primary">ECE 22.06 / Snell</span>
+              </div>
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Material</span><span className="text-text-primary">AIM+ Composite Fiber</span>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-1 flex-wrap">
               <CharRevealButton
                 text="View Helmet Details"
                 onClick={() => router.push('/products/shoei-x-fifteen-helmet')}
@@ -113,13 +146,13 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Right Side: Specifications Details */}
+          {/* Right specs — desktop only */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6 md:pl-12 text-left"
+            className="hidden md:flex flex-col gap-6 md:pl-12 text-left"
           >
             <div className="h-0.5 w-12 bg-orange-accent" />
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -127,57 +160,47 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-2 font-mono text-[11px] text-text-muted uppercase">
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Certification</span>
-                <span className="text-text-primary">ECE 22.06 / Snell</span>
+                <span>Certification</span><span className="text-text-primary">ECE 22.06 / Snell</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Material</span>
-                <span className="text-text-primary">AIM+ Composite Fiber</span>
+                <span>Material</span><span className="text-text-primary">AIM+ Composite Fiber</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Weight</span>
-                <span className="text-text-primary">1550 grams</span>
+                <span>Weight</span><span className="text-text-primary">1550 grams</span>
               </div>
             </div>
           </motion.div>
         </div>
+      </section>
 
-        {/* Center: Isolated Product Image Floating in Void */}
+      {/* ─── Slide 3: ALPINESTARS JACKET ─── */}
+      <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden border-b border-border/10">
+        {/* Floating product image — fades on mobile */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
-          <motion.div
-            whileInView={{ rotate: [0, 8, 0], scale: [0.95, 1.05, 0.95] }}
-            transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
-            className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute"
-          />
+          <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute opacity-40 md:opacity-100" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <motion.img
-            whileInView={{ y: [-15, 15, -15], rotate: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            src="https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&w=600&q=80"
-            alt="Shoei X-Fifteen"
-            className="w-[280px] md:w-[480px] object-contain drop-shadow-[0_10px_30px_rgba(255,90,0,0.1)]"
-            style={{ 
-              mixBlendMode: 'var(--product-blend)' as any, 
+            whileInView={{ y: [15, -15, 15] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            src="https://images.unsplash.com/photo-1551698618-1fed5d97d256?auto=format&fit=crop&w=600&q=80"
+            alt="Alpinestars Jacket"
+            className="w-[200px] md:w-[480px] object-contain opacity-15 md:opacity-100"
+            style={{
+              mixBlendMode: 'var(--product-blend)' as any,
               filter: 'var(--product-filter)',
-              opacity: 'var(--product-opacity)',
               WebkitMaskImage: 'var(--product-mask)',
               maskImage: 'var(--product-mask)'
             }}
           />
         </div>
-      </section>
 
-      {/* Slide 3: ALPINESTARS JACKET */}
-      <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden border-b border-border/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16 z-10">
-          
-          {/* Left Side: Dense Display Headline */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mt-16 z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
             <span className="text-[10px] font-mono font-bold tracking-widest text-orange-accent uppercase">
               MODEL 02 / ABRASION PROTECTION
@@ -187,7 +210,16 @@ export default function Home() {
               GP PRO V4<br />
               JACKET
             </h2>
-            <div className="flex gap-4 mt-2">
+            {/* Mobile compact specs */}
+            <div className="flex flex-col gap-1.5 font-mono text-[11px] text-text-muted uppercase md:hidden">
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Material</span><span className="text-text-primary">1.3mm Bovine Leather</span>
+              </div>
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Armor</span><span className="text-text-primary">CE Level 2</span>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-1 flex-wrap">
               <CharRevealButton
                 text="View Jacket Details"
                 onClick={() => router.push('/products/alpinestars-gp-pro-v4-jacket')}
@@ -195,13 +227,13 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Right Side: Specifications Details */}
+          {/* Desktop right specs */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6 md:pl-12 text-left"
+            className="hidden md:flex flex-col gap-6 md:pl-12 text-left"
           >
             <div className="h-0.5 w-12 bg-orange-accent" />
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -209,53 +241,47 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-2 font-mono text-[11px] text-text-muted uppercase">
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Material</span>
-                <span className="text-text-primary">1.3mm Bovine Leather</span>
+                <span>Material</span><span className="text-text-primary">1.3mm Bovine Leather</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Armor Level</span>
-                <span className="text-text-primary">CE Level 2 Protective Armor</span>
+                <span>Armor Level</span><span className="text-text-primary">CE Level 2 Protective Armor</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Airbag Ready</span>
-                <span className="text-text-primary">Tech-Air 5 System Compatible</span>
+                <span>Airbag Ready</span><span className="text-text-primary">Tech-Air 5 System Compatible</span>
               </div>
             </div>
           </motion.div>
         </div>
+      </section>
 
-        {/* Center: Isolated Product Image */}
+      {/* ─── Slide 4: DAINESE GLOVES ─── */}
+      <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden border-b border-border/10">
+        {/* Floating product image — fades on mobile */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
-          <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute" />
+          <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute opacity-40 md:opacity-100" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <motion.img
-            whileInView={{ y: [15, -15, 15] }}
-            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            src="https://images.unsplash.com/photo-1551698618-1fed5d97d256?auto=format&fit=crop&w=600&q=80"
-            alt="Alpinestars Jacket"
-            className="w-[280px] md:w-[480px] object-contain"
-            style={{ 
-              mixBlendMode: 'var(--product-blend)' as any, 
+            whileInView={{ y: [-15, 15, -15] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            src="https://images.unsplash.com/photo-1516900557549-41557d405adf?auto=format&fit=crop&w=600&q=80"
+            alt="Dainese Gloves"
+            className="w-[200px] md:w-[480px] object-contain opacity-15 md:opacity-100"
+            style={{
+              mixBlendMode: 'var(--product-blend)' as any,
               filter: 'var(--product-filter)',
-              opacity: 'var(--product-opacity)',
               WebkitMaskImage: 'var(--product-mask)',
               maskImage: 'var(--product-mask)'
             }}
           />
         </div>
-      </section>
 
-      {/* Slide 4: DAINESE GLOVES */}
-      <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden border-b border-border/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16 z-10">
-          
-          {/* Left Side: Dense Display Headline */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mt-16 z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
             <span className="text-[10px] font-mono font-bold tracking-widest text-orange-accent uppercase">
               MODEL 03 / MECHANICAL SENSATION
@@ -265,7 +291,16 @@ export default function Home() {
               CARBON 4<br />
               RACE GLOVES
             </h2>
-            <div className="flex gap-4 mt-2">
+            {/* Mobile compact specs */}
+            <div className="flex flex-col gap-1.5 font-mono text-[11px] text-text-muted uppercase md:hidden">
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Material</span><span className="text-text-primary">Premium Goatskin</span>
+              </div>
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span>Protection</span><span className="text-text-primary">Carbon Fiber Knuckles</span>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-1 flex-wrap">
               <CharRevealButton
                 text="View Gloves Details"
                 onClick={() => router.push('/products/dainese-carbon-4-long-gloves')}
@@ -273,13 +308,13 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Right Side: Specifications Details */}
+          {/* Desktop right specs */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6 md:pl-12 text-left"
+            className="hidden md:flex flex-col gap-6 md:pl-12 text-left"
           >
             <div className="h-0.5 w-12 bg-orange-accent" />
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -287,52 +322,29 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-2 font-mono text-[11px] text-text-muted uppercase">
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Material</span>
-                <span className="text-text-primary">Premium Goatskin Leather</span>
+                <span>Material</span><span className="text-text-primary">Premium Goatskin Leather</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Protection</span>
-                <span className="text-text-primary">Carbon Fiber Knuckles Shell</span>
+                <span>Protection</span><span className="text-text-primary">Carbon Fiber Knuckles Shell</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-1">
-                <span>Grip</span>
-                <span className="text-text-primary">Polyurethane palm inserts</span>
+                <span>Grip</span><span className="text-text-primary">Polyurethane palm inserts</span>
               </div>
             </div>
           </motion.div>
         </div>
-
-        {/* Center: Isolated Product Image */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
-          <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full filter blur-[40px] bg-orange-accent/5 absolute" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <motion.img
-            whileInView={{ y: [-15, 15, -15] }}
-            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            src="https://images.unsplash.com/photo-1516900557549-41557d405adf?auto=format&fit=crop&w=600&q=80"
-            alt="Dainese Gloves"
-            className="w-[280px] md:w-[480px] object-contain"
-            style={{ 
-              mixBlendMode: 'var(--product-blend)' as any, 
-              filter: 'var(--product-filter)',
-              opacity: 'var(--product-opacity)',
-              WebkitMaskImage: 'var(--product-mask)',
-              maskImage: 'var(--product-mask)'
-            }}
-          />
-        </div>
       </section>
 
-      {/* Slide 5: AI SERVICES INTRO */}
+      {/* ─── Slide 5: AI SERVICES INTRO ─── */}
       <section className="h-screen w-full snap-start shrink-0 relative flex items-center bg-canvas overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16 z-10">
-          
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mt-16 z-10 overflow-y-auto max-h-[calc(100vh-64px)]">
+
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
             <span className="text-[10px] font-mono font-bold tracking-widest text-orange-accent uppercase">
               ARTIFICIAL INTELLIGENCE / CORE SYSTEM
@@ -345,7 +357,7 @@ export default function Home() {
             <p className="text-sm text-text-secondary leading-relaxed max-w-sm">
               Our integrated cognitive engine assists in product search, sizing recommendations based on body geometry, and track gear set planning.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3">
               <CharRevealButton
                 text="Launch AI Chatbot"
                 onClick={() => setIsAIChatOpen(true)}
@@ -358,26 +370,33 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <div className="bg-surface-raised border border-border/40 p-8 rounded-cards flex flex-col gap-6 text-left">
-            <h3 className="font-display text-base font-bold text-text-primary uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-orange-accent" />
+          {/* AI capabilities card — visible on all screen sizes, compact on mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-surface-raised border border-border/40 p-5 md:p-8 rounded-cards flex flex-col gap-4 md:gap-6 text-left"
+          >
+            <h3 className="font-display text-sm md:text-base font-bold text-text-primary uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-orange-accent" />
               <span>COGNITIVE CAPABILITIES</span>
             </h3>
-            <ul className="space-y-4 text-xs text-text-secondary leading-relaxed">
+            <ul className="space-y-3 md:space-y-4 text-xs text-text-secondary leading-relaxed">
               <li>
                 <span className="font-bold text-text-primary block">AI Sizing Advisor</span>
-                Enter height, chest, and waist coordinates to calculate the optimal jacket or helmet fit.
+                Enter height, chest, and waist to calculate the optimal jacket or helmet fit.
               </li>
               <li>
                 <span className="font-bold text-text-primary block">Dynamic Catalog RAG</span>
-                Chat directly with our assistant to query real-time stock and comparative features.
+                Chat with our assistant to query real-time stock and comparative features.
               </li>
               <li>
                 <span className="font-bold text-text-primary block">Product Q&A Console</span>
-                Ask specific material or track certification questions right on the details page.
+                Ask specific material or track certification questions on the product page.
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </section>
 
