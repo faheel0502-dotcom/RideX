@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+:root {
+  /* ==========================================
+     COLOR PALETTE - DARK MODE (DEFAULT)
+     ========================================== */
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  
+  --color-canvas: #0a0a0a;
+  --color-surface-raised: #141414;
+  --color-surface-card: #1f1f1f;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+  --color-border: #2d2d2d;
+  
+  /* Accent Color (Vibrant Moto Orange) */
+  --color-orange-accent: #ff5a00;
+  --color-orange-hover: #e04f00;
+  --color-orange-glow: rgba(255, 90, 0, 0.15);
+
+  /* Theme-Aware Background/Image variables */
+  --hero-gradient: linear-gradient(to bottom, rgba(10, 9, 4, 0.45), rgba(10, 9, 4, 1));
+  --product-blend: lighten;
+  --product-filter: none;
+  --product-opacity: 0.3;
+  --product-mask: radial-gradient(circle, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 75%);
+
+  /* ==========================================
+     TYPOGRAPHY
+     ========================================== */
+  /* Font Families */
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* ==========================================
+     SHAPES & ELEVATION
+     ========================================== */
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-cards: 16px;
+  --radius-buttons-rounded: 12px;
+  --radius-buttons-pill: 9999px;
+  --radius-inputs: 8px;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 15px var(--color-orange-glow);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(20, 20, 20, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(12px);
+}
+
+/* ==========================================
+   COLOR PALETTE - LIGHT MODE OVERRIDES
+   ========================================== */
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #0f172a;
+
+  --color-canvas: #ffffff;
+  --color-surface-raised: #f8fafc;
+  --color-surface-card: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #576579;
+  --color-border: #cbd5e1;
+  
+  /* Shadows */
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.06);
+
+  /* Theme-Aware Background/Image variables overrides */
+  --hero-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(255, 255, 255, 1) 100%);
+  --product-blend: normal;
+  --product-filter: none;
+  --product-opacity: 0.85;
+  --product-mask: radial-gradient(circle, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 95%);
+}
+
+@theme {
+  /* Colors */
+  --color-canvas: var(--color-canvas);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-surface-card: var(--color-surface-card);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+  
+  --color-orange-accent: var(--color-orange-accent);
+  --color-orange-hover: var(--color-orange-hover);
+
+  /* Typography */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-buttons-rounded: var(--radius-buttons-rounded);
+  --radius-cards: var(--radius-cards);
+  --radius-pill: var(--radius-buttons-pill);
+  
+  /* Shadows */
+  --shadow-soft: var(--shadow-soft);
+  --shadow-glow: var(--shadow-glow);
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+/* Smooth transitions for all elements affected by theme toggling */
+body, 
+body *,
+body *::before,
+body *::after {
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              text-decoration-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              fill 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              stroke 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
